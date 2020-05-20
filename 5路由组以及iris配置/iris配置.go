@@ -14,9 +14,10 @@ func main() {
 		DisableInterruptHandler:           false,
 		DisablePathCorrection:             false,
 		EnablePathEscape:                  false,
+		FireMethodNotAllowed:              false,
 		DisableBodyConsumptionOnUnmarshal: false,
 		DisableAutoFireStatusCode:         false,
-		TimeFormat:                        "Mon,02,jan 2006 15:04:05 GMT",
+		TimeFormat:                        "mon,02,jan 2006 15:04:05 GMT",
 		Charset:                           "utf-8",
 	}))
 
@@ -29,14 +30,13 @@ func main() {
 	app.Configure(iris.WithConfiguration(iris.YAML("/Users/dcw/Documents/go_project/src/irisDemo/5路由组以及iris配置/iris.yml")))
 
 	// 4. 通过jsos配置文件进行应用配置
-	file, _ := os.Open("/Users/dcw/Documents/go_project/src/irisDemo/5路由组以及iris配置/config.json")
+	file, _ := os.Open("/Users/dcw/Documents/go_project/src/irisDemo/iris/5路由组以及iris配置/config.json")
 	defer file.Close()
-
 	decoder := json.NewDecoder(file)
-	conf := Configuration{}
+	conf := Coniguration{}
 	err := decoder.Decode(&conf)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println("error:", err)
 	}
 	fmt.Println(conf.Port)
 
@@ -44,7 +44,7 @@ func main() {
 	app.Run(iris.Addr(":8009"))
 }
 
-type Configuration struct {
-	AppName string
-	Port    int
+type Coniguration struct {
+	AppName string `json:"app_name"`
+	Port    int    `json:"port"`
 }
